@@ -1,0 +1,9 @@
+dt	auto
+totalTime	100
+dragModel	Singh
+FroudeKrylov	No
+Dispersion	Yes
+compressible	No
+observeTime	1e-1
+startDir	100
+analytical	Yes	1000
