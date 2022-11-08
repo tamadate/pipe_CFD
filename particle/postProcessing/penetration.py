@@ -24,20 +24,25 @@ pltNormal()
 fig, axs = plt.subplots(1,1,figsize=(5,5))
 axNormal(axs)
 
+#for i in np.arange(1000):
+#    data=np.loadtxt("../../../../pipe/result/position."+str(i))
+#    axs.plot(data.T[0],data.T[2])
+#plt.show()
 
 L=0.52
 Dpipe=12.7e-3
 Uave=11.84
-mu=1.8e-5
 rho=1.2
+mu=1.8e-5
+nu=mu/rho
 Re=rho*Uave*Dpipe/mu
 fanning=0.316/4.0/Re**0.25
-Ustar=(0.5*fanning)**0.5*Uave
+Ustar=((0.5*fanning)**0.5)*Uave
 rhop=1000
 A=np.pi*Dpipe*Dpipe/4.0
 Q=Uave*A
 S=np.pi*Dpipe*L
-particleSizes=[1,2,5]
+particleSizes=[1,2,5,10]
 
 x=[]
 y=[]
@@ -48,7 +53,7 @@ for dp in particleSizes:
 
     Dp=1e-6*dp
     tau=rhop*Dp*Dp*Cc(Dp)/18.0/mu
-    taup=tau*Ustar*Ustar/mu
+    taup=tau*Ustar*Ustar/nu
     Iout=0
     Idep=0
     for i in np.arange(np.size(data.T[0])):
@@ -58,7 +63,7 @@ for dp in particleSizes:
             Idep+=initialVelocity[i][2]
     P=Iout/(Iout+Idep)
 
-    Vp=Q/S*np.log(1/P)
+    Vp=Q/S*np.log(1/P)/Ustar
     x=np.append(x,taup)
     y=np.append(y,Vp)
     print(str(taup)+" "+str(Vp))
